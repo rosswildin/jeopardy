@@ -1,39 +1,74 @@
+var score = 0;
+var selectedQuestion = {};
+
+$(".playerScore").append('<h2>' + score + '</h2>');
+
+
 document.addEventListener("DOMContentLoaded", function() {
-	
-	getQuestions();
+
 	//add click event listener to each box
 	addListeners();
 
 	//add click event for reset button
-	document.getElementById("reset").addEventListener("click", resetBoard);
-
+	// document.getElementById("reset").addEventListener("click", resetBoard);
 
 });
 
 function addListeners() {
+	$(".choices").on('click', function(){
+		$(this).text('');
+		$(".hiddenDiv").show();
+		// var clickedBox = this.id;
 
-	$(".choices").on('click', )
-}
+		var question = $(this).attr('data-question');
+		var answer = $(this).attr('data-answer');
+		var questionScore = parseInt($(this).text());
 
+		selectedQuestion['question'] = question;
+		selectedQuestion['answer'] = answer;
+		selectedQuestion['score'] = questionScore;
 
-var query = null;
-$('.choices').click(function(){
-	query = $('#categoryToFind').val();
-	getData();
-});
+		console.log(selectedQuestion);
 
-function getQuestions(){
-	$.get('https://www.opentdb.com/api.php?amount=100&category=9&difficulty=easy&type=multiple', {
-		q: query, 
-		// restrict_sr: "on",
-		// sort: "new"
-	}).done(function(data){
+		$('.hiddenDiv').append('<h2>' + question + '</h2>');
+		// console.log(clickedBox);
 		
-		var gotData = data.data.children;
-		makeUrlArray(gotData);
-
-	}).fail(function(error){
-		console.log('there was erROAR');
-});
+		$(".choices").hide();
+	});
 }
+
+
+$("#userInput").on("click", function(){
+	handleUserInput();
+	$(".hiddenDiv h2").remove();
+	$(".hiddenDiv").hide();
+	$(".choices").show();
+});
+
+function handleUserInput(){
+	
+	var userAnswer = $(".answerField").val();
+
+	if(selectedQuestion['answer'] === userAnswer){
+		console.log("worked");
+		score + selectedQuestion['score'];
+	} else {
+		console.log('wrong!');
+	}
+}
+
+
+// function handleUserInput(){
+  
+//   if (answerField input == correctAnswer){
+//   	$('.playerScore').append('<h2>' + score+ '</h2>');
+//   }
+  
+//   $('.hiddenDiv').fadeOut();
+//   $('.choices').show();
+// }
+
+
+
+
 
